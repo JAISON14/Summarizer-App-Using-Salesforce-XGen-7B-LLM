@@ -6,7 +6,8 @@ XGen-7b is a powerful language model that can generate high-quality summaries of
 
 The summarization process is handled by the XGen-7b model, which has been fine-tuned for causal language modeling. The model is equipped with specific configurations, such as using torch's bfloat16 data type for enhanced performance.
 
-How to Use the App
+### How to Use the App
+
 1.Open the web app URL: [[Web App URL]](https://summarizerapp.azurewebsites.net/)
 
 2.Upon accessing the app, you will see a text box labeled "Text."
