@@ -26,8 +26,10 @@ def summarize(text):
 
     # Combine the header with the user-provided text and format it for model input
     text = header + "### Human: Please summarize the following article. \n\n" + text + "\n###"
+
     # Tokenize the input text and convert it to PyTorch tensors
     inputs = tokenizer(text, return_tensors="pt")
+
     # Generate a summary using the pre-trained model
     generated_ids = model.generate(
         **inputs,
@@ -37,17 +39,27 @@ def summarize(text):
         top_k=50,
         temperature=0.7,
     )
+    # Decode the generated summary and remove special tokens
     summary = tokenizer.decode(generated_ids[0], skip_special_tokens=True).lstrip()
+
     # summary starts from ### Assistant: and ends with <|endoftext|>
     summary = summary.split("### Assistant:")[1]
     summary = summary.split("<|endoftext|>")[0]
+
+    # Return the summary as the output to be displayed in the Gradio interface
     return gr.Textbox.update(value=summary)
 
+# Create a Gradio interface for the summarize function
 with gr.BLocks() as demo:
+    # Add a textbox to input the text to be summarized
     with gr.Row():
         text = gr.Textbox(lines=20, label="Text")
+        # Add another textbox to display the generated summary
         summary = gr.Textbox(label="Summary", lines=20)
+    # Add a button to trigger the summarization process
     submit = gr.Button(text="Summarize")
+    # Link the button click event to the summarize function, with text as input and summary as output
     submit.click(summarize, inputs=text, outputs=summary)
 
+# Launch the Gradio interface
 demo.launch()
